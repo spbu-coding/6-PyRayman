@@ -1,4 +1,4 @@
-
+#include "sortings.h"
 #include <string.h>
 #define ASCII_NUM 128
 
