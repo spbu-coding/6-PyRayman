@@ -54,6 +54,7 @@ void merge(strings_array_t strings, array_size_t size, comparator_func_t cmp) {
 
 
 void quick(strings_array_t strings, array_size_t size, comparator_func_t cmp) {
+
     unsigned mid = size / 2, i = 0, j = size - 1;
     do {
 
@@ -61,14 +62,13 @@ void quick(strings_array_t strings, array_size_t size, comparator_func_t cmp) {
         while (cmp(strings[j], strings[mid])) j--;
         if (i <= j) {
 
-            swap(strings[i], strings[j]);
+            swap(&strings[i], &strings[j]);
             i++;
             j--;
         }
     } while (i <= j);
     if (j > 0) quick(strings, j + 1, cmp);
     if (i < size - 1) quick(&strings[i], size - i, cmp);
-}
 }
 
 
