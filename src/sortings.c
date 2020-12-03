@@ -67,7 +67,7 @@ void quick(strings_array_t strings, array_size_t size, comparator_func_t cmp) {
         }
     } while (i <= j);
     if (j > 0) quick(strings, j + 1, cmp);
-    if (i < size - 1) quick&strings[i], size - i, cmp);
+    if (i < size - 1) quick(strings[i], size - i, cmp);
 }
 }
 
