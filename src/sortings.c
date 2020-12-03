@@ -61,7 +61,7 @@ void quick(strings_array_t strings, array_size_t size, comparator_func_t cmp) {
         while (cmp(strings[j], strings[mid])) j--;
         if (i <= j) {
 
-            swap(&strings[i], &strings[j]);
+            swap(strings[i], strings[j]);
             i++;
             j--;
         }
