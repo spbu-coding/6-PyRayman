@@ -138,9 +138,6 @@ int sort_call(int sort_method, array_size_t size, int comparator, strings_array_
             radix(strings,size,comparator_choose(comparator));
             break;
         
-    
-        default:
-            return -1;
     }
 
 }
