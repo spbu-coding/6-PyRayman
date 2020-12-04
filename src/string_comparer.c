@@ -136,8 +136,7 @@ int sort_call(int sort_method, array_size_t size, int comparator, strings_array_
         
         case 5:
             radix(strings,size,comparator_choose(comparator));
-            break;
-        
+            break;  
     }
 
 }
@@ -157,7 +156,7 @@ int read_file(strings_array_t strings_array, char* filename, array_size_t lines_
             fprintf(stderr, "Ошибка чтения строки %d/%lu\n", i,  lines_count);
             return -1;
         }
-        if(strchr(strings_array[i], '\n') == NULL) strcat(strings_array[i], "\n");
+        if(strchr(strings_array[i], '\n') == NULL){ strcat(strings_array[i], "\n");}
     }
     fclose(file);
 }
