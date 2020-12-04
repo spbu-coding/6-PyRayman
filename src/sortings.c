@@ -1,5 +1,5 @@
 #include "sortings.h"
-#include <math.h>
+#include <stdlib.h>
 #include <string.h>
 #define ASCII_NUM 128
 
@@ -14,7 +14,7 @@ void bubble(strings_array_t strings, array_size_t size, comparator_func_t cmp) {
     for (unsigned int i = 0; i < size; i++) {
         for (unsigned int j = 0; j < size - 1 - i; j++) {
             if (cmp(strings[j], strings[j + 1]) > 0) {
-                swap(strings[j], strings[j + 1]);
+                swap(&strings[j], &strings[j + 1]);
             }
         }
     }
@@ -23,7 +23,7 @@ void bubble(strings_array_t strings, array_size_t size, comparator_func_t cmp) {
 void insertion(strings_array_t strings, array_size_t size, comparator_func_t cmp) {
     for (unsigned int i = 1; i < size; i++) {
         for (unsigned int j = i; j > 0 && cmp(strings[j - 1], strings[j]) > 0; j--) {
-            swap(strings[j - 1], strings[j]);
+            swap(&strings[j - 1], &strings[j]);
         }
     }
 }
