@@ -1,10 +1,11 @@
 #include "sortings.h"
+#include <math.h>
 #include <string.h>
 #define ASCII_NUM 128
 
-void swap(char *xp, char *yp) 
+void swap(char **xp, char **yp) 
 { 
-    char     temp = *xp; 
+    char *temp = *xp; 
     *xp = *yp; 
     *yp = temp; 
 } 
@@ -13,7 +14,7 @@ void bubble(strings_array_t strings, array_size_t size, comparator_func_t cmp) {
     for (unsigned int i = 0; i < size; i++) {
         for (unsigned int j = 0; j < size - 1 - i; j++) {
             if (cmp(strings[j], strings[j + 1]) > 0) {
-                swap(strings[j], strings[j + 1])
+                swap(strings[j], strings[j + 1]);
             }
         }
     }
@@ -22,34 +23,56 @@ void bubble(strings_array_t strings, array_size_t size, comparator_func_t cmp) {
 void insertion(strings_array_t strings, array_size_t size, comparator_func_t cmp) {
     for (unsigned int i = 1; i < size; i++) {
         for (unsigned int j = i; j > 0 && cmp(strings[j - 1], strings[j]) > 0; j--) {
-            swap(strings[j - 1], strings[j])
+            swap(strings[j - 1], strings[j]);
         }
     }
 }
 
 
 void merge(strings_array_t strings, array_size_t size, comparator_func_t cmp) {
-    for (unsigned int parts_num = size; parts_num > 1; parts_num = (unsigned int) ceil(parts_num / 2.0)) {
-        size_t part_len = (size_t) ceil(size / (double)parts_num);
-        for (unsigned int i = 0; i < parts_num - 1; i += 2) {
-            size_t len1 = part_len, len2 = (((i + 2) * part_len) <= size) ? part_len : (size - (i + 1) * part_len), buf_len = len1 + len2;
-            unsigned int ind1 = i * part_len, ind2 = (i + 1) * part_len;
-            char* buf[buf_len];
-            while (len1 > 0 && len2 > 0) {
-                if (cmp(strings[ind1], strings[ind2]) <= 0) {
-                    buf[buf_len - (len1-- + len2)] = strings[ind1++];
-                } else {
-                    buf[buf_len - (len1 + len2--)] = strings[ind2++];
-                }
-            }
-            if (len1 > 0) {
-                memcpy(&buf[buf_len - len1], &strings[ind1], len1 * sizeof(char*));
-            } else {
-                memcpy(&buf[buf_len - len2], &strings[ind2], len2 * sizeof(char*));
-            }
-            memcpy(&strings[i * part_len], buf, buf_len * sizeof(char*));
+
+    if (size == 1) return;
+    array_size_t left_size = (size - size / 2);
+    array_size_t right_size = size / 2;
+    strings_array_t array_left = malloc(left_size * sizeof(char *));
+ 
+    for (unsigned i = 0; i < left_size; i++) array_left[i] = strings[i];
+    strings_array_t array_right = malloc(right_size * sizeof(char *));
+
+    for (unsigned i = left_size; i < size; i++) array_right[i - left_size] = strings[i];
+
+    merge(array_left, left_size, cmp);
+    merge(array_right, right_size, cmp);
+
+    unsigned i = 0, j = 0, k = 0;
+    while (i < left_size && j < right_size) {
+
+        if (cmp(array_left[i], array_right[j])) {
+
+            strings[k] = array_right[j];
+            j++;
+            k++;
+        } else {
+
+            strings[k] = array_left[i];
+            i++;
+            k++;
         }
     }
+    while (i < left_size) {
+
+        strings[k] = array_left[i];
+        i++;
+        k++;
+    }
+    while (j < right_size) {
+
+        strings[k] = array_right[j];
+        j++;
+        k++;
+    }
+    free(array_left);
+    free(array_right);
 }
 
 
