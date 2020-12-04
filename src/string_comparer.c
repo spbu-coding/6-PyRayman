@@ -177,10 +177,11 @@ int write_file(strings_array_t strings_array, char* filename, int array_len){
 int main(int argc, char** argv){
     strings_array_t strings;
     array_size_t array_size;
-    char *input_file;
-    char *output_file;
+    
     int sort_method;
     int comparator;
+    char input_file[255];
+    char output_file[255];
 
     get_params(argc,argv,input_file,output_file,&array_size,&sort_method,&comparator);
     
