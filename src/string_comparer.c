@@ -7,8 +7,8 @@
 
 int get_params(int argc, char* argv[], char* input_file, char* output_file, array_size_t* number_of_strings ,int *sort_method, int *comparator){
 
-    if(argc < 5) return -1;
-    if(argc > 5) return -2;
+    if(argc < 5){ return -1;}
+    if(argc > 5){ return -1;}
 
    
     if( atoi(argv[1]) != 0 )    
@@ -52,7 +52,6 @@ int get_params(int argc, char* argv[], char* input_file, char* output_file, arra
     }
 
 
-// -------------------------------------------------------------
     if( (strncmp(argv[4]  , "bubble" , 6) == 0))    
     {
         *sort_method = 1;
