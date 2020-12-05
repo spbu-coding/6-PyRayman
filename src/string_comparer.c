@@ -109,12 +109,12 @@ comparator_func_t comparator_choose(int comparator){
         return asc_cmp;
     }
 
-    else if(comparator == 2){
+    else {
         return des_cmp;
     }
 }
 
-int sort_call(int sort_method, array_size_t size, int comparator, strings_array_t strings){
+void sort_call(int sort_method, array_size_t size, int comparator, strings_array_t strings){
     switch (sort_method)
     {
         case 1:
@@ -158,6 +158,9 @@ int read_file(strings_array_t strings_array, char* filename, array_size_t lines_
         if(strchr(strings_array[i], '\n') == NULL){ strcat(strings_array[i], "\n");}
     }
     fclose(file);
+
+    return 0;
+    
 }
 
 int write_file(strings_array_t strings_array, char* filename, int array_len){
@@ -169,7 +172,8 @@ int write_file(strings_array_t strings_array, char* filename, int array_len){
     }
     for (int i = 0; i < array_len; i++){
         fputs(strings_array[i],file);
-    }   
+    }
+    return 0;   
 }
 
 int main(int argc, char** argv){
