@@ -5,23 +5,28 @@
 #include <limits.h>
 #include "sortings.h"
 
-int get_params(int argc, char* argv[], char* input_file, char* output_file, array_size_t* number_of_strings ,int *sort_method, int *comparator){
+int get_params(int argc, char** argv, char *input_file, char *output_file, array_size_t* number_of_strings ,int *sort_method, int *comparator){
 
-    if(argc < 5){ return -1;}
-    if(argc > 5){ return -1;}
+    if(argc < 6) return -1;
+
+    if(argc > 6) return -1;
+
 
    
-    if( atoi(argv[1]) != 0 )    
-    {
-        *number_of_strings = (unsigned long int)atoi(argv[1]);   
+    char* end;
+    *number_of_strings = strtoul(argv[1], &end, 10);
+    printf(" count %lu \n",*number_of_strings);
+    if(*end != '\0') {
+        return -1;
     }
-    else{return -1;}
+    
     
 
 
     if ((strstr(argv[2], ".txt") != NULL)  && (strstr(argv[3], ".txt") != NULL) ){
             
         FILE *file = fopen(argv[2],"r");
+   
         
 
         if (file == NULL){
@@ -30,15 +35,20 @@ int get_params(int argc, char* argv[], char* input_file, char* output_file, arra
             return -1;
 
         }
-
-
         else{
-            
-            strcpy(input_file,argv[2]);
-            strcpy(output_file,argv[3]);
+  
+        strcpy(input_file,argv[2]);
+        strcpy(output_file,argv[3]);
+        printf("input_file: %s \n",input_file);
+        printf("out_file: %s \n",output_file);
+
         }
+        
+
+        
 
         fclose(file);
+
             
     }
     else{return -1;}
@@ -141,7 +151,7 @@ void sort_call(int sort_method, array_size_t size, int comparator, strings_array
 }
 
 
-int read_file(strings_array_t strings_array, char* filename, array_size_t lines_count){
+int read_file(strings_array_t strings_array, char *filename, array_size_t lines_count){
     FILE *file = fopen(filename,"r");
 
     if(file == NULL){
@@ -163,7 +173,7 @@ int read_file(strings_array_t strings_array, char* filename, array_size_t lines_
     
 }
 
-int write_file(strings_array_t strings_array, char* filename, int array_len){
+int write_file(strings_array_t strings_array, char *filename, int array_len){
     FILE *file = fopen(filename,"w");
 
     if(file == NULL){
@@ -172,21 +182,31 @@ int write_file(strings_array_t strings_array, char* filename, int array_len){
     }
     for (int i = 0; i < array_len; i++){
         fputs(strings_array[i],file);
+
     }
+    fclose(file);
     return 0;   
 }
 
 int main(int argc, char** argv){
     strings_array_t strings;
     array_size_t array_size;
+
     
     int sort_method;
     int comparator;
-    char input_file[255];
-    char output_file[255];
+    char input_file[256];
+    char output_file[256];
 
     get_params(argc,argv,input_file,output_file,&array_size,&sort_method,&comparator);
+
+    if ((strstr(argv[2], ".txt") != NULL)  && (strstr(argv[3], ".txt") != NULL) ){
+        printf("OK\n");
+
+    }
     
+
+
     strings = (char**)malloc( sizeof( char *) * array_size );
 
     read_file(strings,input_file,array_size);
@@ -194,6 +214,8 @@ int main(int argc, char** argv){
     sort_call(sort_method,array_size,comparator,strings);
 
     write_file(strings,output_file,array_size);
+
+
 
 
     return 0;
