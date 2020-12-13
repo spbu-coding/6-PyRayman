@@ -28,7 +28,6 @@ void insertion(strings_array_t strings, array_size_t size, comparator_func_t cmp
     }
 }
 
-
 void merge(strings_array_t strings, array_size_t size, comparator_func_t cmp) {
 
     if (size == 1) return;
@@ -80,7 +79,6 @@ void quick(strings_array_t strings, array_size_t size, comparator_func_t cmp) {
 
     unsigned mid = size / 2, i = 0, j = size - 1;
     do {
-
         while (cmp(strings[mid], strings[i])) i++;
         while (cmp(strings[j], strings[mid])) j--;
         if (i <= j) {
@@ -126,13 +124,11 @@ void radix_realize( char **strings , array_size_t size , int max , comparator_fu
 
 void radix( strings_array_t strings , array_size_t size , comparator_func_t cmp )
 {
-
     int max = 0;
     for( int i = 0 ; i < (int)size ; i++ )
     {
         if( max < (int)strlen( strings[i] ) )
         max = (int)strlen(strings[i]);
     }
-
     radix_realize( strings , size , max , cmp );
 }

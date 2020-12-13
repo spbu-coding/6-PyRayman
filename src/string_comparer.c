@@ -1,18 +1,12 @@
 #include <stdio.h>
 #include <string.h>
-#include <ctype.h>
 #include <stdlib.h>
-#include <limits.h>
 #include "sortings.h"
 
 int get_params(int argc, char** argv, char *input_file, char *output_file, array_size_t* number_of_strings ,int *sort_method, int *comparator){
-
     if(argc < 6) return -1;
-
     if(argc > 6) return -1;
 
-
-   
     char* end;
     *number_of_strings = strtoul(argv[1], &end, 10);
     printf(" count %lu \n",*number_of_strings);
@@ -20,36 +14,18 @@ int get_params(int argc, char** argv, char *input_file, char *output_file, array
         return -1;
     }
     
-    
-
-
-    if ((strstr(argv[2], ".txt") != NULL)  && (strstr(argv[3], ".txt") != NULL) ){
-            
+    if ((strstr(argv[2], ".txt") != NULL)  && (strstr(argv[3], ".txt") != NULL) ){          
         FILE *file = fopen(argv[2],"r");
-   
-        
 
         if (file == NULL){
             printf("input file not found\n");
-            
             return -1;
-
         }
         else{
-  
         strcpy(input_file,argv[2]);
         strcpy(output_file,argv[3]);
-        printf("input_file: %s \n",input_file);
-        printf("out_file: %s \n",output_file);
-
         }
-        
-
-        
-
         fclose(file);
-
-            
     }
     else{return -1;}
 
@@ -88,7 +64,7 @@ int get_params(int argc, char** argv, char *input_file, char *output_file, array
     }
     else{return -1;}
 
-// ---------------------------------------------------
+
     if( (strncmp(argv[5]  , "asc" , 3) == 0))    
     {
         *comparator = 1;
@@ -98,8 +74,6 @@ int get_params(int argc, char** argv, char *input_file, char *output_file, array
         *comparator = 2;
     }
     else{return -1;}
-
-// -------------------------------------------------------
 
     return 0;
 }
@@ -147,11 +121,9 @@ void sort_call(int sort_method, array_size_t size, int comparator, strings_array
             radix(strings,size,comparator_choose(comparator));
             break;  
     }
-
 }
 
-
-int read_file(strings_array_t strings_array, char *filename, array_size_t lines_count){
+int read_file(char** strings_array, char *filename, array_size_t lines_count){
     FILE *file = fopen(filename,"r");
 
     if(file == NULL){
@@ -161,16 +133,11 @@ int read_file(strings_array_t strings_array, char *filename, array_size_t lines_
 
     for (unsigned i = 0; i < lines_count; i++)
     {   
-        if(fgets(strings_array[i], MAX_INPUT_STRING_SIZE, file) == NULL) {
-            fprintf(stderr, "Ошибка чтения строки %d/%lu\n", i,  lines_count);
-            return -1;
-        }
-        if(strchr(strings_array[i], '\n') == NULL){ strcat(strings_array[i], "\n");}
+        strings_array[i] = (char*)malloc(MAX_INPUT_STRING_SIZE + 2);
+        fgets(strings_array[i], MAX_INPUT_STRING_SIZE + 2, file);
     }
     fclose(file);
-
-    return 0;
-    
+    return 0; 
 }
 
 int write_file(strings_array_t strings_array, char *filename, int array_len){
@@ -180,45 +147,33 @@ int write_file(strings_array_t strings_array, char *filename, int array_len){
         printf("Ошибка открытия файла");
         return -1;
     }
-    for (int i = 0; i < array_len; i++){
-        fputs(strings_array[i],file);
+    int nul_char = 0; 
+    if (strchr (strings_array[array_len-1],'\n') != 0) nul_char = 1;
 
+    for (int i = 0; i < array_len; i++)  
+    {
+        fputs(strings_array[i], file);
+		free(strings_array[i]);
     }
+    if (nul_char == 0) fputs("\n", file) ;
     fclose(file);
-    return 0;   
+    return 0;
 }
 
 int main(int argc, char** argv){
-    strings_array_t strings;
     array_size_t array_size;
-
-    
     int sort_method;
     int comparator;
     char input_file[256];
     char output_file[256];
 
     get_params(argc,argv,input_file,output_file,&array_size,&sort_method,&comparator);
-
-    if ((strstr(argv[2], ".txt") != NULL)  && (strstr(argv[3], ".txt") != NULL) ){
-        printf("OK\n");
-
-    }
-    
-
-
-    strings = (char**)malloc( sizeof( char *) * array_size );
+    char **strings = (char**)malloc(array_size * (MAX_INPUT_STRING_SIZE + 2));
 
     read_file(strings,input_file,array_size);
-
     sort_call(sort_method,array_size,comparator,strings);
-
     write_file(strings,output_file,array_size);
 
-
-
-
+    free(strings);
     return 0;
-
-
 }
