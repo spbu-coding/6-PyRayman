@@ -9,7 +9,7 @@ int get_params(int argc, char** argv, char *input_file, char *output_file, array
 
     char* end;
     *number_of_strings = strtoul(argv[1], &end, 10);
-    printf(" count %lu \n",*number_of_strings);
+
     if(*end != '\0') {
         return -1;
     }

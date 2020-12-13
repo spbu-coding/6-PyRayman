@@ -77,19 +77,32 @@ void merge(strings_array_t strings, array_size_t size, comparator_func_t cmp) {
 
 void quick(strings_array_t strings, array_size_t size, comparator_func_t cmp) {
 
-    unsigned mid = size / 2, i = 0, j = size - 1;
-    do {
-        while (cmp(strings[mid], strings[i])) i++;
-        while (cmp(strings[j], strings[mid])) j--;
-        if (i <= j) {
+    int left = 0; 
+    int right = size - 1;
+    char *mid, *temp;
 
-            swap(&strings[i], &strings[j]);
-            i++;
-            j--;
+    mid = strings[size / 2];
+    
+    do {
+        while(cmp(strings[left],mid)<0) left++;
+  
+        while(cmp(strings[right],mid)>0) right--;
+
+        if (left <= right) {  
+            temp = strings[left];
+            strings[left] = strings[right];
+            strings[right] = temp;
+            left++;
+            right--;
         }
-    } while (i <= j);
-    if (j > 0) quick(strings, j + 1, cmp);
-    if (i < size - 1) quick(&strings[i], size - i, cmp);
+    } while (left <= right);
+  
+    if(right > 0){
+        quick(strings, right + 1, cmp);
+    }
+    if (left < (int)size){  
+        quick(&strings[left], size - left, cmp);
+    }
 }
 
 
