@@ -166,7 +166,10 @@ int main(int argc, char** argv){
     int comparator;
     char input_file[256];
     char output_file[256];
-
+    int check = get_params(argc,argv,input_file,output_file,&array_size,&sort_method,&comparator);
+    if (check != 0){
+        return check;
+    }
     get_params(argc,argv,input_file,output_file,&array_size,&sort_method,&comparator);
     char **strings = (char**)malloc(array_size * (MAX_INPUT_STRING_SIZE + 2));
 
