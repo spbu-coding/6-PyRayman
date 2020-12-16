@@ -125,7 +125,7 @@ int read_file(char** strings_array, char *filename, array_size_t lines_count){
     return 0; 
 }
 
-int write_file(strings_array_t strings_array, char *filename, int array_len){
+int write_file(strings_array_t strings_array, char *filename, array_size_t array_len){
     FILE *file = fopen(filename,"w");
 
     if(file == NULL){
@@ -165,6 +165,7 @@ int main(int argc, char** argv){
     read_file(strings,input_file,array_size);
     sort_call(sort_method,array_size,comparator,strings);
     write_file(strings,output_file,array_size);
+
     for(array_size_t i = 0; i < array_size; i++)
     {
         free(strings[i]);
