@@ -29,49 +29,57 @@ void insertion(strings_array_t strings, array_size_t size, comparator_func_t cmp
 }
 
 void merge(strings_array_t strings, array_size_t size, comparator_func_t cmp) {
+    array_size_t step = 1;
+    strings_array_t new_array = malloc(sizeof(char *) * size);
 
-    if (size == 1) return;
-    array_size_t left_size = (size - size / 2);
-    array_size_t right_size = size / 2;
-    strings_array_t array_left = malloc(left_size * sizeof(char *));
- 
-    for (unsigned i = 0; i < left_size; i++) array_left[i] = strings[i];
-    strings_array_t array_right = malloc(right_size * sizeof(char *));
+    while(step < size)
+    {
+        array_size_t index = 0, left = 0, middle = left + step, right = left + step * 2;
+        do{
+            if(middle > size)
+            {
+                middle = size;
+            }
+            if(right > size)
+            {
+                right = size;
+            }
 
-    for (unsigned i = left_size; i < size; i++) array_right[i - left_size] = strings[i];
+            array_size_t i = left, j = middle;
+            while(i < middle && j < right)
+            {
+                if(cmp(strings[j], strings[i]))
+                {
+                    new_array[index++] = strings[i++];
+                }
+                else
+                {
+                    new_array[index++] = strings[j++];
+                }
+            }
 
-    merge(array_left, left_size, cmp);
-    merge(array_right, right_size, cmp);
+            while(i < middle)
+            {
+                new_array[index++] = strings[i++];
+            }
+            while(j < right)
+            {
+                new_array[index++] = strings[j++];
+            }
 
-    unsigned i = 0, j = 0, k = 0;
-    while (i < left_size && j < right_size) {
+            left += step * 2;
+            middle += step * 2;
+            right += step * 2;
+        } while (left < size);
 
-        if (cmp(array_left[i], array_right[j])) {
-
-            strings[k] = array_right[j];
-            j++;
-            k++;
-        } else {
-
-            strings[k] = array_left[i];
-            i++;
-            k++;
+        for(array_size_t i = 0; i < size; i++)
+        {
+            strings[i] = new_array[i];
         }
+        step *= 2;
     }
-    while (i < left_size) {
 
-        strings[k] = array_left[i];
-        i++;
-        k++;
-    }
-    while (j < right_size) {
-
-        strings[k] = array_right[j];
-        j++;
-        k++;
-    }
-    free(array_left);
-    free(array_right);
+    free(new_array);
 }
 
 

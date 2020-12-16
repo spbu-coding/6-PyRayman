@@ -29,13 +29,7 @@ int get_params(int argc, char** argv, char *input_file, char *output_file, array
     }
     else{return -1;}
 
-    if (number_of_strings == 0) {
-
-        FILE *output = fopen(output_file, "w");
-        fputs("\n", output);
-        fclose(output);
-        return 0;
-    }
+    
 
 
     if( (strncmp(argv[4]  , "bubble" , 6) == 0))    
@@ -78,14 +72,34 @@ int get_params(int argc, char** argv, char *input_file, char *output_file, array
     return 0;
 }
 
-int asc_cmp(const char* first_line, const char* second_line)
+int asc_cmp(const char *first_string, const char *second_string)
 {
-    return strcmp(first_line, second_line );
+    char first_string_char, second_string_char;
+    do
+    {
+        first_string_char = *first_string++;
+        second_string_char = *second_string++;
+        if(first_string_char == '\0')
+        {
+            return (first_string_char - second_string_char) > 0;
+        }
+    } while(first_string_char == second_string_char);
+    return (first_string_char - second_string_char) > 0;
 }
 
-int des_cmp(const char* first_line, const char* second_line)
+int des_cmp(const char *first_string, const char *second_string)
 {
-    return -strcmp(first_line, second_line);
+    char first_string_char, second_string_char;
+    do
+    {
+        first_string_char = *first_string++;
+        second_string_char = *second_string++;
+        if(first_string_char == '\0')
+        {
+            return (first_string_char - second_string_char) < 0;
+        }
+    } while(first_string_char == second_string_char);
+    return (first_string_char - second_string_char) < 0;
 }
 
 comparator_func_t comparator_choose(int comparator){
@@ -146,6 +160,12 @@ int write_file(strings_array_t strings_array, char *filename, int array_len){
     if(file == NULL){
         printf("Ошибка открытия файла");
         return -1;
+    }
+    if (array_len == 0) {
+
+        fputs("\n", file);
+        fclose(file);
+        return 0;
     }
     int nul_char = 0; 
     if (strchr (strings_array[array_len-1],'\n') != 0) nul_char = 1;
