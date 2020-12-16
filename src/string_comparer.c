@@ -40,7 +40,7 @@ int get_params(int argc, char** argv, char *input_file, char *output_file, array
         FILE *file = fopen(argv[2],"r");
 
         if (file == NULL){
-            printf("input file not found\n");
+            printf("Входной файл не найден\n");
             return -1;
         }
         else{
@@ -51,7 +51,10 @@ int get_params(int argc, char** argv, char *input_file, char *output_file, array
     }
     else{return -1;}
 
-    check_count_of_strings(input_file,*number_of_strings);
+    if (check_count_of_strings(input_file,*number_of_strings) != 0){
+        
+        return -1;
+    }
 
 
     if( (strncmp(argv[4]  , "bubble" , 6) == 0))    
