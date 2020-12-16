@@ -72,35 +72,7 @@ int get_params(int argc, char** argv, char *input_file, char *output_file, array
     return 0;
 }
 
-int asc_cmp(const char *first_string, const char *second_string)
-{
-    char first_string_char, second_string_char;
-    do
-    {
-        first_string_char = *first_string++;
-        second_string_char = *second_string++;
-        if(first_string_char == '\0')
-        {
-            return (first_string_char - second_string_char) > 0;
-        }
-    } while(first_string_char == second_string_char);
-    return (first_string_char - second_string_char) > 0;
-}
 
-int des_cmp(const char *first_string, const char *second_string)
-{
-    char first_string_char, second_string_char;
-    do
-    {
-        first_string_char = *first_string++;
-        second_string_char = *second_string++;
-        if(first_string_char == '\0')
-        {
-            return (first_string_char - second_string_char) < 0;
-        }
-    } while(first_string_char == second_string_char);
-    return (first_string_char - second_string_char) < 0;
-}
 
 comparator_func_t comparator_choose(int comparator){
     if(comparator == 1 ){
