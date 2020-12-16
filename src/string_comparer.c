@@ -117,7 +117,7 @@ int check_count_of_strings(char* input_file, array_size_t count_of_strings){
     char* input_file_strings = malloc(sizeof(char) * MAX_INPUT_STRING_SIZE);
 
     while(feof(file)){
-        if(fgets(input_file_strings, MAX_INPUT_STRING_SIZE, input_file) != NULL){
+        if(fgets(input_file_strings, MAX_INPUT_STRING_SIZE, file) != NULL){
             count_of_strings_in_file++;
         }
     }
