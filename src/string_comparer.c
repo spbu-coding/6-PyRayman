@@ -3,13 +3,32 @@
 #include <stdlib.h>
 #include "sortings.h"
 
+int check_count_of_strings(char* input_file, array_size_t count_of_strings){
+    FILE *file = fopen(input_file, "r");
+    array_size_t count_of_strings_in_file = 0;
+    char* input_file_strings = malloc(sizeof(char) * MAX_INPUT_STRING_SIZE);
+
+    while(feof(file)){
+        if(fgets(input_file_strings, MAX_INPUT_STRING_SIZE, file) != NULL){
+            count_of_strings_in_file++;
+        }
+    }
+    free(input_file_strings);
+
+    if(count_of_strings_in_file < count_of_strings){
+        fclose(file);
+        return -1;
+    }
+    return 0;
+}
+
 int get_params(int argc, char** argv, char *input_file, char *output_file, array_size_t* number_of_strings ,int *sort_method, int *comparator){
     if(argc < 6) return -1;
     if(argc > 6) return -1;
 
     char* end;
     *number_of_strings = strtoul(argv[1], &end, 10);
-    if (number_of_strings < 0){
+    if (*number_of_strings < 0){
         return -1;
     }
     
@@ -32,7 +51,7 @@ int get_params(int argc, char** argv, char *input_file, char *output_file, array
     }
     else{return -1;}
 
-    check_count_of_strings(input_file,number_of_strings);
+    check_count_of_strings(input_file,*number_of_strings);
 
 
     if( (strncmp(argv[4]  , "bubble" , 6) == 0))    
@@ -111,24 +130,7 @@ void sort_call(int sort_method, array_size_t size, int comparator, strings_array
             break;  
     }
 }
-int check_count_of_strings(char* input_file, array_size_t count_of_strings){
-    FILE *file = fopen(input_file, "r");
-    array_size_t count_of_strings_in_file = 0;
-    char* input_file_strings = malloc(sizeof(char) * MAX_INPUT_STRING_SIZE);
 
-    while(feof(file)){
-        if(fgets(input_file_strings, MAX_INPUT_STRING_SIZE, file) != NULL){
-            count_of_strings_in_file++;
-        }
-    }
-    free(input_file_strings);
-
-    if(count_of_strings_in_file < count_of_strings){
-        fclose(file);
-        return -1;
-    }
-    return 0;
-}
 
 int read_file(char** strings_array, char *filename, array_size_t lines_count){
     FILE *file = fopen(filename,"r");
