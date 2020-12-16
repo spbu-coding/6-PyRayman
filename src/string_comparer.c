@@ -157,7 +157,7 @@ int main(int argc, char** argv){
     }
     get_params(argc,argv,input_file,output_file,&array_size,&sort_method,&comparator);
     char **strings = malloc(sizeof(char*) * array_size);
-    for(int i = 0; i < array_size; i++)
+    for(array_size_t i = 0; i < array_size; i++)
     {
         strings[i] = malloc(sizeof(char) * MAX_INPUT_STRING_SIZE);
     }
@@ -165,7 +165,7 @@ int main(int argc, char** argv){
     read_file(strings,input_file,array_size);
     sort_call(sort_method,array_size,comparator,strings);
     write_file(strings,output_file,array_size);
-    for(int i = 0; i < array_size; i++)
+    for(array_size_t i = 0; i < array_size; i++)
     {
         free(strings[i]);
     }
