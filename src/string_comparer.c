@@ -117,16 +117,15 @@ int read_file(char** strings_array, char *filename, array_size_t lines_count){
         return -1;
     }
 
-    for (unsigned i = 0; i < lines_count; i++)
+    for (array_size_t i = 0; i < lines_count; i++)
     {   
-        strings_array[i] = (char*)malloc(MAX_INPUT_STRING_SIZE + 2);
-        fgets(strings_array[i], MAX_INPUT_STRING_SIZE + 2, file);
+        fgets(strings_array[i], MAX_INPUT_STRING_SIZE, file);
     }
     fclose(file);
     return 0; 
 }
 
-int write_file(strings_array_t strings_array, char *filename, int array_len){
+int write_file(strings_array_t strings_array, char *filename, array_size_t array_len){
     FILE *file = fopen(filename,"w");
 
     if(file == NULL){
@@ -134,20 +133,14 @@ int write_file(strings_array_t strings_array, char *filename, int array_len){
         return -1;
     }
     if (array_len == 0) {
-
         fputs("\n", file);
-        fclose(file);
-        return 0;
     }
-    int nul_char = 0; 
-    if (strchr (strings_array[array_len-1],'\n') != 0) nul_char = 1;
 
-    for (int i = 0; i < array_len; i++)  
+    for (array_size_t i = 0; i < array_len; i++)  
     {
         fputs(strings_array[i], file);
-		free(strings_array[i]);
     }
-    if (nul_char == 0) fputs("\n", file) ;
+ 
     fclose(file);
     return 0;
 }
@@ -163,12 +156,20 @@ int main(int argc, char** argv){
         return check;
     }
     get_params(argc,argv,input_file,output_file,&array_size,&sort_method,&comparator);
-    char **strings = (char**)malloc(array_size * (MAX_INPUT_STRING_SIZE + 2));
+    char **strings = malloc(sizeof(char*) * array_size);
+    for(array_size_t i = 0; i < array_size; i++)
+    {
+        strings[i] = malloc(sizeof(char) * MAX_INPUT_STRING_SIZE);
+    }
 
     read_file(strings,input_file,array_size);
     sort_call(sort_method,array_size,comparator,strings);
     write_file(strings,output_file,array_size);
 
+    for(array_size_t i = 0; i < array_size; i++)
+    {
+        free(strings[i]);
+    }
     free(strings);
     return 0;
 }
