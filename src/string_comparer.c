@@ -8,7 +8,7 @@ int check_count_of_strings(char* input_file, array_size_t count_of_strings){
     array_size_t count_of_strings_in_file = 0;
     char* input_file_strings = malloc(sizeof(char) * MAX_INPUT_STRING_SIZE);
 
-    while(feof(file)){
+    while(!feof(file)){
         if(fgets(input_file_strings, MAX_INPUT_STRING_SIZE, file) != NULL){
             count_of_strings_in_file++;
         }
@@ -19,6 +19,7 @@ int check_count_of_strings(char* input_file, array_size_t count_of_strings){
         fclose(file);
         return -1;
     }
+    fclose(file);
     return 0;
 }
 
@@ -52,7 +53,6 @@ int get_params(int argc, char** argv, char *input_file, char *output_file, array
     else{return -1;}
 
     if (check_count_of_strings(input_file,*number_of_strings) != 0){
-        
         return -1;
     }
 
