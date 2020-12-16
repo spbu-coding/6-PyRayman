@@ -8,6 +8,9 @@ typedef int (*comparator_func_t)(const char*, const char*);
 typedef char** strings_array_t;
 typedef size_t array_size_t;
 
+int asc_cmp(const char*, const char*);
+
+int des_cmp(const char*, const char*);
 
 void bubble(strings_array_t, array_size_t, comparator_func_t);
 
